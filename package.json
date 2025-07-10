@@ -67,7 +67,11 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/apps/"
-    ]
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^@shared/decorators(|/.*)$": "<rootDir>/libs/decorators/src/$1"
+    }
   }
 }
