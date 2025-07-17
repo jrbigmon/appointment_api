@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
+import { ScheduleModule } from './schedule/schedule.module';
 
 @Module({
-  imports: [],
+  imports: [ScheduleModule],
 })
 export class AppointmentModule {}
