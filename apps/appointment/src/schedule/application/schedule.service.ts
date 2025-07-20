@@ -1,8 +1,8 @@
 import { IRepository } from 'apps/appointment/shared/repository.interface';
 import { ConflictException, Inject, Injectable, Logger } from '@nestjs/common';
-import { ScheduleEntity } from './entity/schedule.entity';
+import { ScheduleEntity } from '../domain/entity/schedule.entity';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
-import { usecaseCalculatePrice } from './usecase/caculate-schedule-price.usecase';
+import { usecaseCalculatePrice } from '../domain/usecase/caculate-schedule-price.usecase';
 
 @Injectable()
 export class ScheduleService {
