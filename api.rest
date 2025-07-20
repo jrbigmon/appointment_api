@@ -7,9 +7,12 @@ Content-Type: application/json
   "name": "Maria Silva"
  },
  "startDate": "2025-07-15T09:00:00.000Z",
- "endDate": "2025-07-19T10:00:00.000Z"
+ "endDate": "2025-07-15T10:00:00.000Z"
 }
 
 ###
+GET http://localhost:3000/schedule/price/ccbc2836-a8eb-48fb-9b4d-6cc51aa4177b/b
 
-GET http://localhost:3000/schedule 
+
+###
+GET http://localhost:3000/schedule

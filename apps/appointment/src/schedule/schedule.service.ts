@@ -2,6 +2,7 @@ import { IRepository } from 'apps/appointment/shared/repository.interface';
 import { ConflictException, Inject, Injectable, Logger } from '@nestjs/common';
 import { ScheduleEntity } from './entity/schedule.entity';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
+import { usecaseCalculatePrice } from './usecase/caculate-schedule-price.usecase';
 
 @Injectable()
 export class ScheduleService {
@@ -51,5 +52,21 @@ export class ScheduleService {
     if (hasScheduleForThisDate) {
       throw new ConflictException('Already exists a schedule for this date');
     }
+  }
+
+  async getPriceSchedule(
+    scheduleId: string,
+    type: 'a' | 'b',
+  ): Promise<{
+    price: number;
+    pricePerHour: number;
+  }> {
+    const schedule = await this.scheduleRepository.findById(scheduleId);
+
+    if (!schedule) {
+      throw new ConflictException('Schedule not found');
+    }
+
+    return usecaseCalculatePrice(schedule, type);
   }
 }

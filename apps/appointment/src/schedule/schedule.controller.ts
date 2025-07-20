@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 
@@ -14,5 +14,10 @@ export class ScheduleController {
   @Get()
   findAllSchedules() {
     return this.scheduleService.findAll();
+  }
+
+  @Get('price/:id/:type')
+  getPriceSchedule(@Param('id') id: string, @Param('type') type: 'a' | 'b') {
+    return this.scheduleService.getPriceSchedule(id, type);
   }
 }

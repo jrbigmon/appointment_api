@@ -14,7 +14,11 @@ export class ScheduleRepository implements IRepository<ScheduleEntity> {
   }
 
   findById(id: string): Promise<ScheduleEntity> {
-    throw new Error('Method not implemented.');
+    const schedule = this.schedules.find((s) => s.id === id);
+    if (!schedule) {
+      return Promise.reject(new Error('Schedule not found'));
+    }
+    return Promise.resolve(schedule);
   }
 
   update(id: string, item: ScheduleEntity): Promise<ScheduleEntity> {

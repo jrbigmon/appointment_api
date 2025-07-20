@@ -1,4 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
+import { ScheduleCalcPrice } from '../gateway/schedule-calc-price.interface';
 
 export class ScheduleEntity {
   id: string;
@@ -51,6 +52,10 @@ export class ScheduleEntity {
     } else {
       return ScheduleStatusEnum.IN_PROGRESS;
     }
+  }
+
+  getPrice(scheduleCalcInterface: ScheduleCalcPrice): number {
+    return scheduleCalcInterface.calc(this.startDate, this.endDate);
   }
 }
 
