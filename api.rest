@@ -6,8 +6,8 @@ Content-Type: application/json
   "id": "b3b6c8e2-1f2a-4c3a-9e7a-123456789abc",
   "name": "Maria Silva"
  },
- "startDate": "2025-07-15T09:00:00.000Z",
- "endDate": "2025-07-15T10:00:00.000Z"
+ "startDate": "2025-07-16T09:00:00.000Z",
+ "endDate": "2025-07-16T10:00:00.000Z"
 }
 
 ###

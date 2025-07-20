@@ -27,9 +27,7 @@ export class ScheduleService {
 
       this.logger.log('Creating schedule entity', scheduleEntity);
 
-      await this.scheduleRepository.create(scheduleEntity);
-
-      return scheduleEntity;
+      return await this.scheduleRepository.create(scheduleEntity);
     } catch (error) {
       this.logger.error('Error executing schedule service', error);
       throw error;
