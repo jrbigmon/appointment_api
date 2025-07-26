@@ -1,8 +1,11 @@
-import { IRepository } from 'apps/appointment/shared/repository.interface';
 import { ConflictException, Inject, Injectable, Logger } from '@nestjs/common';
-import { ScheduleEntity } from '../domain/entity/schedule.entity';
+import {
+  ClientEntity,
+  ScheduleEntity,
+} from '../domain/entity/schedule/schedule.entity';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
-import { usecaseCalculatePrice } from '../domain/usecase/caculate-schedule-price.usecase';
+import { IScheduleRepository } from '../domain/repository/repository.interface';
+import { ScheduleFactory } from '../domain/factory/schedule.factory';
 
 @Injectable()
 export class ScheduleService {
@@ -10,17 +13,18 @@ export class ScheduleService {
 
   constructor(
     @Inject('ScheduleRepository')
-    private readonly scheduleRepository: IRepository<ScheduleEntity>,
+    private readonly scheduleRepository: IScheduleRepository,
   ) {}
 
   async create(input: CreateScheduleDto) {
     try {
-      const { client, endDate, startDate } = input;
+      const { client, endDate, startDate, billingType } = input;
 
-      const scheduleEntity = new ScheduleEntity({
-        client,
-        startDate: new Date(startDate),
+      const scheduleEntity = ScheduleFactory.create({
+        client: new ClientEntity(client),
         endDate: new Date(endDate),
+        startDate: new Date(startDate),
+        billingType,
       });
 
       await this.checkIfAlreadyExistsScheduleForThisDate(scheduleEntity);
@@ -41,30 +45,13 @@ export class ScheduleService {
   private async checkIfAlreadyExistsScheduleForThisDate(
     schedule: ScheduleEntity,
   ): Promise<void> {
-    const schedules = await this.scheduleRepository.findAll();
-
-    const hasScheduleForThisDate = schedules.some(
-      (s) => s.startDate <= schedule.endDate && s.endDate >= schedule.startDate,
+    const schedules = await this.scheduleRepository.findByDateRange(
+      schedule.getStartDate(),
+      schedule.getEndDate(),
     );
 
-    if (hasScheduleForThisDate) {
+    if (schedules?.length > 0) {
       throw new ConflictException('Already exists a schedule for this date');
     }
-  }
-
-  async getPriceSchedule(
-    scheduleId: string,
-    type: 'a' | 'b',
-  ): Promise<{
-    price: number;
-    pricePerHour: number;
-  }> {
-    const schedule = await this.scheduleRepository.findById(scheduleId);
-
-    if (!schedule) {
-      throw new ConflictException('Schedule not found');
-    }
-
-    return usecaseCalculatePrice(schedule, type);
   }
 }

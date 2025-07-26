@@ -1,7 +1,7 @@
 import { ScheduleCalcPrice } from './schedule-calc-price.interface';
 
-export class ScheduleCalcPriceA implements ScheduleCalcPrice {
-  private readonly pricePerHour = 50;
+export class ScheduleCalcPriceCommon implements ScheduleCalcPrice {
+  private readonly pricePerHour = 75;
 
   calc(startDate: Date, endDate: Date): number {
     const duration = (endDate.getTime() - startDate.getTime()) / 3600000; // Convert milliseconds to hours

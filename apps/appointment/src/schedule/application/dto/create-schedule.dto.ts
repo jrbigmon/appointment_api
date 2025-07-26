@@ -1,10 +1,12 @@
 import {
   IsDateString,
+  IsEnum,
   IsString,
   IsUUID,
   ValidateNested,
 } from 'class-validator';
 
+import { BillingTypeEnum } from '../../domain/enums/billing-type.enum';
 import { Type } from 'class-transformer';
 
 export class ClientDto {
@@ -25,4 +27,7 @@ export class CreateScheduleDto {
 
   @IsDateString()
   endDate: string;
+
+  @IsEnum(BillingTypeEnum)
+  billingType: BillingTypeEnum;
 }

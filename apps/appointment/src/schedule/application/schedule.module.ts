@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ScheduleController } from './schedule.controller';
 import { ScheduleModel } from './model/schedule.model';
-import { ScheduleRepository } from './repository/schedule.repository';
+import { ScheduleRepositoryMemory } from './repository/schedule.repository.memory';
 import { ScheduleRepositoryTypeORM } from './repository/schedule.repository.typeorm';
 import { ScheduleService } from './schedule.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,7 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   controllers: [ScheduleController],
   providers: [
     ScheduleService,
-    ScheduleRepository,
+    ScheduleRepositoryMemory,
     ScheduleRepositoryTypeORM,
     {
       provide: 'ScheduleRepository',

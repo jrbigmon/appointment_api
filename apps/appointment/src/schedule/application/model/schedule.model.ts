@@ -7,8 +7,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { ScheduleStatusEnum } from '../../domain/entity/schedule.entity';
-
 @Entity()
 export class ScheduleModel {
   @PrimaryGeneratedColumn('uuid')
@@ -20,14 +18,17 @@ export class ScheduleModel {
   @Column({ type: 'timestamptz' })
   endDate: Date;
 
-  @Column({ type: 'varchar' })
-  status: ScheduleStatusEnum;
-
   @Column({ type: 'jsonb' })
   client: {
     id: string;
     name: string;
   };
+
+  @Column({ type: 'double' })
+  price: number;
+
+  @Column({ name: 'price_per_hour', type: 'double' })
+  pricePerHour: number;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;

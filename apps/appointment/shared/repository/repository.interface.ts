@@ -3,5 +3,5 @@ export interface IRepository<T> {
   findById(id: string): Promise<T | null>;
   update(id: string, item: T): Promise<T>;
   delete(id: string): Promise<void>;
-  findAll(): Promise<T[]>;
+  findAll<O>(options?: O): Promise<T[]>;
 }
