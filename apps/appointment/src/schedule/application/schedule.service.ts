@@ -4,7 +4,7 @@ import {
   ScheduleEntity,
 } from '../domain/entity/schedule/schedule.entity';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
-import { IScheduleRepository } from '../domain/repository/repository.interface';
+import { IScheduleRepository } from '../domain/repository/schedule.repository.interface';
 import { ScheduleFactory } from '../domain/factory/schedule.factory';
 
 @Injectable()

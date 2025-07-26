@@ -1,4 +1,4 @@
-import { IScheduleRepository } from '../../domain/repository/repository.interface';
+import { IScheduleRepository } from '../../domain/repository/schedule.repository.interface';
 import { Injectable } from '@nestjs/common';
 import { ScheduleEntity } from '../../domain/entity/schedule/schedule.entity';
 import { InjectRepository } from '@nestjs/typeorm';
