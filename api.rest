@@ -1,19 +1,28 @@
+### Create client
+POST http://localhost:3000/clients
+Content-Type: application/json
+
+{
+ "name": "Vagner",
+ "email": "juniorterriaga0@gmail.com",
+ "phone": "11956542085",
+ "rg": "540246827",
+ "cpf": "47223888814",
+ "active": true
+}
+
+
+
+### Create schedule
 POST http://localhost:3000/schedules
 Content-Type: application/json
 
 {
  "client": {
-  "id": "b3b6c8e2-1f2a-4c3a-9e7a-123456789abc",
-  "name": "Maria Silva"
+  "id": "9952e905-e644-4bab-8bc1-d65466870b2a"
  },
  "startDate": "2025-07-16T09:00:00.000Z",
  "endDate": "2025-07-16T10:00:00.000Z",
  "billingType": "Common"
 }
 
-###
-GET http://localhost:3000/schedule/price/ccbc2836-a8eb-48fb-9b4d-6cc51aa4177b/b
-
-
-###
-GET http://localhost:3000/schedule

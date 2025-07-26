@@ -17,6 +17,13 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
+    "paths": {
+      "@app/validators": [
+        "libs/validators/src"
+      ],
+      "@app/validators/*": [
+        "libs/validators/src/*"
+      ]
+    }
   }
 }

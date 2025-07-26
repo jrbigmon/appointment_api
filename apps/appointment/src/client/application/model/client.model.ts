@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { ScheduleModel } from './schedule.model';
+import { ScheduleModel } from 'apps/appointment/src/schedule/application/model/schedule.model';
 
 @Entity({ name: 'clients' })
 export class ClientModel {
@@ -19,7 +19,19 @@ export class ClientModel {
   name: string;
 
   @Column({ type: 'varchar' })
+  email: string;
+
+  @Column({ type: 'varchar' })
   cpf: string;
+
+  @Column({ type: 'varchar' })
+  rg: string;
+
+  @Column({ type: 'varchar' })
+  phone: string;
+
+  @Column({ type: 'boolean' })
+  active: boolean;
 
   @OneToMany(() => ScheduleModel, (schedule) => schedule.client)
   schedules: ScheduleModel[];

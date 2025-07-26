@@ -15,7 +15,9 @@ import { scheduleTypeOrmToEntity } from '../gateway/schedule-typeorm-to-entity';
 export class ScheduleRepositoryTypeORM implements IScheduleRepository {
   private readonly defaultTake = 20;
   private readonly defaultSkip = 0;
-  private readonly defaultOrder = [['createdAt', 'DESC']];
+  private readonly defaultOrder: FindOptionsOrder<ScheduleModel> = {
+    createdAt: 'DESC',
+  };
 
   constructor(
     @InjectRepository(ScheduleModel)
@@ -23,7 +25,26 @@ export class ScheduleRepositoryTypeORM implements IScheduleRepository {
   ) {}
 
   async save(item: ScheduleEntity): Promise<void> {
-    await this.scheduleModel.save(item);
+    const {
+      id,
+      price,
+      billingType,
+      client,
+      endDate,
+      pricePerHour,
+      startDate,
+      status,
+    } = item;
+    await this.scheduleModel.save({
+      id,
+      startDate,
+      endDate,
+      price,
+      pricePerHour,
+      billingType,
+      status,
+      clientId: client.id,
+    });
   }
 
   async delete(id: string): Promise<void> {
@@ -50,7 +71,7 @@ export class ScheduleRepositoryTypeORM implements IScheduleRepository {
     endDate: Date;
     skip?: number;
     take?: number;
-    order?: string[][];
+    order?: Partial<Record<keyof ScheduleEntity, 'ASC' | 'DESC'>>;
   }): Promise<ScheduleEntity[]> {
     const {
       startDate,
@@ -70,7 +91,7 @@ export class ScheduleRepositoryTypeORM implements IScheduleRepository {
       },
       skip,
       take,
-      order: order as FindOptionsOrder<ScheduleModel>,
+      order,
     });
 
     return result.map((item) => scheduleTypeOrmToEntity(item));

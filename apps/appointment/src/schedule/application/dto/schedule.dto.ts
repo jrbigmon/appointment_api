@@ -21,6 +21,14 @@ export class ScheduleDto {
   client: ClientDto;
 
   constructor(schedule: ScheduleEntity) {
-    Object.assign(this, schedule);
+    const { id, startDate, endDate, price, pricePerHour, billingType, client } =
+      schedule;
+    this.id = id;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.price = price;
+    this.pricePerHour = pricePerHour;
+    this.billingType = billingType;
+    this.client = client;
   }
 }

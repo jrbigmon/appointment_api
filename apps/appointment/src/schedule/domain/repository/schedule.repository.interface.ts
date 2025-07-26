@@ -8,6 +8,6 @@ export interface IScheduleRepository extends IRepository<ScheduleEntity> {
     endDate: Date;
     take?: number;
     skip?: number;
-    order?: string[][];
+    order?: Partial<Record<keyof ScheduleEntity, 'ASC' | 'DESC'>>;
   }): Promise<ScheduleEntity[]>;
 }

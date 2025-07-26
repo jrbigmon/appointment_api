@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 import { BillingTypeEnum } from '../../domain/enums/billing-type.enum';
-import { ClientModel } from './client.model';
+import { ClientModel } from 'apps/appointment/src/client/application/model/client.model';
 import { ScheduleStatusEnum } from '../../domain/enums/schedule-status.enum';
 
 @Entity({ name: 'schedules' })

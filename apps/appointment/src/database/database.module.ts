@@ -15,7 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           entities: [__dirname + '/../**/*.entity{.ts,.js}'],
           synchronize: true,
           autoLoadEntities: true,
-          logging: process.env.NODE_ENV !== 'production',
+          logging: false,
           migrationsRun: process.env.NODE_ENV !== 'production',
           migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
           ssl: false,

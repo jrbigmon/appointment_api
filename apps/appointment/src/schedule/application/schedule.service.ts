@@ -8,10 +8,11 @@ import {
 import { ScheduleEntity } from '../domain/entity/schedule/schedule.entity';
 import { IScheduleRepository } from '../domain/repository/schedule.repository.interface';
 import { ScheduleFactory } from '../domain/factory/schedule.factory';
-import { IClientRepository } from '../domain/repository/client.repository.interface';
 import { CreateScheduleInput } from './types/create-schedule.type';
 import { UpdateScheduleInput } from './types/update-schedule.type';
 import { ScheduleDto } from './dto/schedule.dto';
+import { IClientFacadeService } from '../../client/application/facade/client.facade.service.interface';
+import { ClientEntity } from '../domain/entity/client/client.entity';
 
 @Injectable()
 export class ScheduleService {
@@ -21,26 +22,28 @@ export class ScheduleService {
     @Inject('ScheduleRepository')
     private readonly scheduleRepository: IScheduleRepository,
 
-    @Inject('ClientRepository')
-    private readonly clientRepository: IClientRepository,
+    @Inject('ClientFacadeService')
+    private readonly clientFacadeService: IClientFacadeService,
   ) {}
 
   async create(input: CreateScheduleInput): Promise<ScheduleDto> {
     try {
       const { client, endDate, startDate, billingType } = input;
 
-      const clientSaved = await this.clientRepository.findById(client.id);
+      const clientSaved = await this.clientFacadeService.findById(client.id);
 
       if (!clientSaved) {
         throw new NotFoundException('Client not found');
       }
 
       const schedule = ScheduleFactory.create({
-        client: clientSaved,
+        client: new ClientEntity(clientSaved),
         endDate: new Date(endDate),
         startDate: new Date(startDate),
         billingType,
       });
+
+      console.log(schedule);
 
       await this.checkIfAlreadyExistsScheduleForThisDate(schedule);
 
@@ -81,11 +84,14 @@ export class ScheduleService {
   private async checkIfAlreadyExistsScheduleForThisDate(
     schedule: ScheduleEntity,
   ): Promise<void> {
+    console.log('enter here');
     const schedules = await this.scheduleRepository.findByDateRange({
       startDate: schedule.startDate,
       endDate: schedule.endDate,
       take: 1,
     });
+
+    console.log('vai tomar no cu', schedules);
 
     const scheduleWithTheSameDate = schedules[0];
 
