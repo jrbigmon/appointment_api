@@ -1,9 +1,9 @@
 import { BillingTypeEnum } from '../enums/billing-type.enum';
-import { CalculateSchedulePrice } from '../entity/schedule/caculate-schedule-price';
+import { CalculateSchedulePrice } from '../entity/schedule/functions/caculate-schedule-price';
 import { ClientEntity } from '../entity/client/client.entity';
-import { GetScheduleStatus } from '../entity/schedule/get-schedule-status';
+import { GetScheduleStatus } from '../entity/schedule/functions/get-schedule-status';
 import { ScheduleEntity } from '../entity/schedule/schedule.entity';
-import { ValidateScheduleDate } from '../entity/schedule/validate-schedule';
+import { ValidateScheduleDate } from '../entity/schedule/functions/validate-schedule';
 import { randomUUID } from 'node:crypto';
 
 type CreateScheduleInput = {
@@ -19,15 +19,26 @@ export class ScheduleFactory {
   public static create(input: CreateScheduleInput): ScheduleEntity {
     const { client, startDate, endDate, billingType } = input;
 
+    const range = { startDate, endDate };
+
+    const { price, pricePerHour } = CalculateSchedulePrice.execute(
+      range,
+      billingType,
+    );
+
+    const status = GetScheduleStatus.execute(range);
+
     const schedule = new ScheduleEntity({
       id: randomUUID(),
       client,
       startDate,
       endDate,
+      billingType,
+      price,
+      pricePerHour,
+      status,
     });
 
-    CalculateSchedulePrice.execute(schedule, billingType);
-    GetScheduleStatus.execute(schedule);
     ValidateScheduleDate.execute(schedule);
 
     return schedule;
@@ -39,11 +50,21 @@ export class ScheduleFactory {
   ): void {
     const { startDate, endDate, billingType } = input;
 
-    startDate && schedule.setStartDate(startDate);
-    endDate && schedule.setEndDate(endDate);
+    const range = {
+      startDate: startDate ?? schedule.startDate,
+      endDate: endDate ?? schedule.endDate,
+    };
 
-    CalculateSchedulePrice.execute(schedule, billingType);
-    GetScheduleStatus.execute(schedule);
+    const { price, pricePerHour } = CalculateSchedulePrice.execute(
+      range,
+      billingType,
+    );
+
+    schedule.startDate = range.startDate;
+    schedule.endDate = range.endDate;
+    schedule.price = price;
+    schedule.pricePerHour = pricePerHour;
+
     ValidateScheduleDate.execute(schedule);
   }
 }

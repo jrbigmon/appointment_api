@@ -23,7 +23,7 @@ export class ScheduleRepositoryTypeORM implements IScheduleRepository {
   ) {}
 
   async save(item: ScheduleEntity): Promise<void> {
-    await this.scheduleModel.save(item.toJSON());
+    await this.scheduleModel.save(item);
   }
 
   async delete(id: string): Promise<void> {

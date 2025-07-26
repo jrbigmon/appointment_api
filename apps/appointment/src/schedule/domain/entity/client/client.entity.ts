@@ -1,23 +1,25 @@
-import { ClassProperties } from 'apps/appointment/shared/types/class-properties.type';
-
 export class ClientEntity {
-  private readonly id: string;
-  private readonly name: string;
+  private readonly _id: string;
+  private readonly _name: string;
 
   constructor({ id, name }: { id: string; name: string }) {
-    this.id = id;
-    this.name = name;
+    this._id = id;
+    this._name = name;
   }
 
-  getId() {
-    return this.id;
+  /**
+   * Getter id
+   * @return {string}
+   */
+  public get id(): string {
+    return this._id;
   }
 
-  getName() {
-    return this.name;
-  }
-
-  toJSON(): ClassProperties<ClientEntity> {
-    return structuredClone(this);
+  /**
+   * Getter name
+   * @return {string}
+   */
+  public get name(): string {
+    return this._name;
   }
 }

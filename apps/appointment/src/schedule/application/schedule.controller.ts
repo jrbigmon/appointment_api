@@ -8,6 +8,10 @@ export class ScheduleController {
 
   @Post()
   create(@Body() createScheduleDto: CreateScheduleDto) {
-    return this.scheduleService.create(createScheduleDto);
+    return this.scheduleService.create({
+      ...createScheduleDto,
+      startDate: new Date(createScheduleDto.startDate),
+      endDate: new Date(createScheduleDto.endDate),
+    });
   }
 }

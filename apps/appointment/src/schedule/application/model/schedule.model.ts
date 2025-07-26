@@ -8,7 +8,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+import { BillingTypeEnum } from '../../domain/enums/billing-type.enum';
 import { ClientModel } from './client.model';
+import { ScheduleStatusEnum } from '../../domain/enums/schedule-status.enum';
 
 @Entity({ name: 'schedules' })
 export class ScheduleModel {
@@ -32,6 +34,12 @@ export class ScheduleModel {
 
   @Column({ name: 'price_per_hour', type: 'decimal' })
   pricePerHour: number;
+
+  @Column({ type: 'varchar' })
+  status: ScheduleStatusEnum;
+
+  @Column({ name: 'billing_type', type: 'varchar' })
+  billingType: BillingTypeEnum;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;

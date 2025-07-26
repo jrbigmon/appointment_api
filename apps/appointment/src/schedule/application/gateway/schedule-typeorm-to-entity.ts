@@ -1,5 +1,4 @@
 import { ClientEntity } from '../../domain/entity/client/client.entity';
-import { GetScheduleStatus } from '../../domain/entity/schedule/get-schedule-status';
 import { ScheduleEntity } from '../../domain/entity/schedule/schedule.entity';
 import { ScheduleModel } from '../model/schedule.model';
 
@@ -12,13 +11,13 @@ export function scheduleTypeOrmToEntity(
     endDate: scheduleModel.endDate,
     price: scheduleModel.price,
     pricePerHour: scheduleModel.pricePerHour,
+    status: scheduleModel.status,
+    billingType: scheduleModel.billingType,
     client: new ClientEntity({
       id: scheduleModel.client.id,
       name: scheduleModel.client.name,
     }),
   });
-
-  GetScheduleStatus.execute(schedule);
 
   return schedule;
 }
