@@ -15,9 +15,7 @@ import { scheduleTypeOrmToEntity } from '../gateway/schedule-typeorm-to-entity';
 export class ScheduleRepositoryTypeORM implements IScheduleRepository {
   private readonly defaultTake = 20;
   private readonly defaultSkip = 0;
-  private readonly defaultOrder: FindOptionsOrder<ScheduleModel> = {
-    createdAt: 'DESC',
-  };
+  private readonly defaultOrder = [['createdAt', 'DESC']];
 
   constructor(
     @InjectRepository(ScheduleModel)
@@ -59,8 +57,9 @@ export class ScheduleRepositoryTypeORM implements IScheduleRepository {
       endDate,
       skip = this.defaultSkip,
       take = this.defaultTake,
-      order = [['createdAt', 'ASC']],
+      order = this.defaultOrder,
     } = options;
+
     const result = await this.scheduleModel.find({
       where: {
         startDate: MoreThanOrEqual(startDate),

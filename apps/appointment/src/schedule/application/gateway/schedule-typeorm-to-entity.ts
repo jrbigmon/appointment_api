@@ -1,9 +1,6 @@
-import {
-  ClientEntity,
-  ScheduleEntity,
-} from '../../domain/entity/schedule/schedule.entity';
-
+import { ClientEntity } from '../../domain/entity/client/client.entity';
 import { GetScheduleStatus } from '../../domain/entity/schedule/get-schedule-status';
+import { ScheduleEntity } from '../../domain/entity/schedule/schedule.entity';
 import { ScheduleModel } from '../model/schedule.model';
 
 export function scheduleTypeOrmToEntity(

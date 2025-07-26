@@ -27,10 +27,10 @@ export class ScheduleModel {
   @ManyToOne(() => ClientModel, (client) => client.schedules)
   client: ClientModel;
 
-  @Column({ type: 'double' })
+  @Column({ type: 'decimal' })
   price: number;
 
-  @Column({ name: 'price_per_hour', type: 'double' })
+  @Column({ name: 'price_per_hour', type: 'decimal' })
   pricePerHour: number;
 
   @CreateDateColumn({ type: 'timestamptz' })

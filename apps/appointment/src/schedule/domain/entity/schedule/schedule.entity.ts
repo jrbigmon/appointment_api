@@ -1,29 +1,12 @@
 import { ClassProperties } from 'apps/appointment/shared/types/class-properties.type';
+import { ClientEntity } from '../client/client.entity';
 import { ScheduleStatusEnum } from '../../enums/schedule-status.enum';
-
-export class ClientEntity {
-  private readonly id: string;
-  private readonly name: string;
-  // private readonly cpf: string;
-  // private readonly email: string;
-
-  constructor({ id, name }: { id: string; name: string }) {
-    this.id = id;
-    this.name = name;
-    // this.cpf = cpf;
-    // this.email = email;
-  }
-
-  toJSON(): ClassProperties<ClientEntity> {
-    return structuredClone(this);
-  }
-}
 
 export class ScheduleEntity {
   private readonly id: string;
+  private readonly client: ClientEntity;
   private startDate: Date;
   private endDate: Date;
-  private readonly client: ClientEntity;
   private price: number;
   private pricePerHour: number;
   private status: ScheduleStatusEnum;

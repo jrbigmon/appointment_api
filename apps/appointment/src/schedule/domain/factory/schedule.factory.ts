@@ -1,11 +1,8 @@
-import {
-  ClientEntity,
-  ScheduleEntity,
-} from '../entity/schedule/schedule.entity';
-
 import { BillingTypeEnum } from '../enums/billing-type.enum';
 import { CalculateSchedulePrice } from '../entity/schedule/caculate-schedule-price';
+import { ClientEntity } from '../entity/client/client.entity';
 import { GetScheduleStatus } from '../entity/schedule/get-schedule-status';
+import { ScheduleEntity } from '../entity/schedule/schedule.entity';
 import { ValidateScheduleDate } from '../entity/schedule/validate-schedule';
 import { randomUUID } from 'node:crypto';
 

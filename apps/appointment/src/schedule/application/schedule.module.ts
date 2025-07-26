@@ -1,4 +1,5 @@
 import { ClientModel } from './model/client.model';
+import { ClientRepositoryTypeORM } from './repository/client.repository.typeorm';
 import { Module } from '@nestjs/common';
 import { ScheduleController } from './schedule.controller';
 import { ScheduleModel } from './model/schedule.model';
@@ -12,11 +13,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   providers: [
     ScheduleService,
     ScheduleRepositoryTypeORM,
+    ClientRepositoryTypeORM,
     {
       provide: 'ScheduleRepository',
       useClass: ScheduleRepositoryTypeORM,
     },
+    {
+      provide: 'ClientRepository',
+      useClass: ClientRepositoryTypeORM,
+    },
   ],
-  exports: [ScheduleService, 'ScheduleRepository'],
 })
 export class ScheduleModule {}

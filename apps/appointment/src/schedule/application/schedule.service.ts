@@ -1,11 +1,15 @@
-import { ConflictException, Inject, Injectable, Logger } from '@nestjs/common';
 import {
-  ClientEntity,
-  ScheduleEntity,
-} from '../domain/entity/schedule/schedule.entity';
+  ConflictException,
+  Inject,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
+import { ScheduleEntity } from '../domain/entity/schedule/schedule.entity';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { IScheduleRepository } from '../domain/repository/schedule.repository.interface';
 import { ScheduleFactory } from '../domain/factory/schedule.factory';
+import { IClientRepository } from '../domain/repository/client.repository.interface';
 
 @Injectable()
 export class ScheduleService {
@@ -14,14 +18,23 @@ export class ScheduleService {
   constructor(
     @Inject('ScheduleRepository')
     private readonly scheduleRepository: IScheduleRepository,
+
+    @Inject('ClientRepository')
+    private readonly clientRepository: IClientRepository,
   ) {}
 
   async create(input: CreateScheduleDto) {
     try {
       const { client, endDate, startDate, billingType } = input;
 
+      const clientSaved = await this.clientRepository.findById(client.id);
+
+      if (!clientSaved) {
+        throw new NotFoundException('Client not found');
+      }
+
       const scheduleEntity = ScheduleFactory.create({
-        client: new ClientEntity(client),
+        client: clientSaved,
         endDate: new Date(endDate),
         startDate: new Date(startDate),
         billingType,
