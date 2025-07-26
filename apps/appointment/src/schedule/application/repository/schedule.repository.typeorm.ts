@@ -4,7 +4,6 @@ import { ScheduleEntity } from '../../domain/entity/schedule/schedule.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ScheduleModel } from '../model/schedule.model';
 import {
-  FindManyOptions,
   FindOptionsOrder,
   LessThanOrEqual,
   MoreThanOrEqual,
@@ -25,6 +24,14 @@ export class ScheduleRepositoryTypeORM implements IScheduleRepository {
     private readonly scheduleModel: Repository<ScheduleModel>,
   ) {}
 
+  async save(item: ScheduleEntity): Promise<void> {
+    await this.scheduleModel.save(item.toJSON());
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.scheduleModel.softDelete(id);
+  }
+
   async findByClientId(clientId: string): Promise<ScheduleEntity[]> {
     const data = await this.scheduleModel.find({
       where: {
@@ -32,36 +39,50 @@ export class ScheduleRepositoryTypeORM implements IScheduleRepository {
           id: clientId,
         },
       },
+      relations: {
+        client: true,
+      },
     });
 
     return data.map((item) => scheduleTypeOrmToEntity(item));
   }
 
-  async findByDateRange(
-    startDate: Date,
-    endDate: Date,
-  ): Promise<ScheduleEntity[]> {
+  async findByDateRange(options: {
+    startDate: Date;
+    endDate: Date;
+    skip?: number;
+    take?: number;
+    order?: string[][];
+  }): Promise<ScheduleEntity[]> {
+    const {
+      startDate,
+      endDate,
+      skip = this.defaultSkip,
+      take = this.defaultTake,
+      order = [['createdAt', 'ASC']],
+    } = options;
     const result = await this.scheduleModel.find({
       where: {
         startDate: MoreThanOrEqual(startDate),
         endDate: LessThanOrEqual(endDate),
       },
+      relations: {
+        client: true,
+      },
+      skip,
+      take,
+      order: order as FindOptionsOrder<ScheduleModel>,
     });
 
     return result.map((item) => scheduleTypeOrmToEntity(item));
   }
 
-  async create(item: ScheduleEntity): Promise<ScheduleEntity> {
-    const scheduleModel = this.scheduleModel.create(item.toJSON());
-
-    const dataSaved = await this.scheduleModel.save(scheduleModel);
-
-    return scheduleTypeOrmToEntity(dataSaved);
-  }
-
   async findById(id: string): Promise<ScheduleEntity> {
     const data = await this.scheduleModel.findOne({
       where: { id },
+      relations: {
+        client: true,
+      },
     });
 
     if (!data) {
@@ -69,30 +90,5 @@ export class ScheduleRepositoryTypeORM implements IScheduleRepository {
     }
 
     return scheduleTypeOrmToEntity(data);
-  }
-
-  async update(id: string, item: ScheduleEntity): Promise<ScheduleEntity> {
-    const dataSaved = await this.scheduleModel.save({
-      id,
-      ...item,
-    });
-
-    return scheduleTypeOrmToEntity(dataSaved);
-  }
-
-  async delete(id: string): Promise<void> {
-    await this.scheduleModel.softDelete(id);
-  }
-
-  async findAll(
-    options: FindManyOptions<ScheduleModel> = {},
-  ): Promise<ScheduleEntity[]> {
-    options.take ??= this.defaultTake;
-    options.skip ??= this.defaultSkip;
-    options.order ??= this.defaultOrder;
-
-    const data = await this.scheduleModel.find(options);
-
-    return data.map((item) => scheduleTypeOrmToEntity(item));
   }
 }

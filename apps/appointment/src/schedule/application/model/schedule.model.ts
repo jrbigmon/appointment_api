@@ -3,11 +3,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+import { ClientModel } from './client.model';
+
+@Entity({ name: 'schedules' })
 export class ScheduleModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -18,11 +21,11 @@ export class ScheduleModel {
   @Column({ type: 'timestamptz' })
   endDate: Date;
 
-  @Column({ type: 'jsonb' })
-  client: {
-    id: string;
-    name: string;
-  };
+  @Column({ name: 'client_id', type: 'uuid' })
+  clientId: string;
+
+  @ManyToOne(() => ClientModel, (client) => client.schedules)
+  client: ClientModel;
 
   @Column({ type: 'double' })
   price: number;

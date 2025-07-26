@@ -31,24 +31,21 @@ export class ScheduleService {
 
       this.logger.log('Creating schedule entity', scheduleEntity);
 
-      return await this.scheduleRepository.create(scheduleEntity);
+      return await this.scheduleRepository.save(scheduleEntity);
     } catch (error) {
       this.logger.error('Error executing schedule service', error);
       throw error;
     }
   }
 
-  async findAll(): Promise<ScheduleEntity[]> {
-    return this.scheduleRepository.findAll();
-  }
-
   private async checkIfAlreadyExistsScheduleForThisDate(
     schedule: ScheduleEntity,
   ): Promise<void> {
-    const schedules = await this.scheduleRepository.findByDateRange(
-      schedule.getStartDate(),
-      schedule.getEndDate(),
-    );
+    const schedules = await this.scheduleRepository.findByDateRange({
+      startDate: schedule.getStartDate(),
+      endDate: schedule.getEndDate(),
+      take: 1,
+    });
 
     if (schedules?.length > 0) {
       throw new ConflictException('Already exists a schedule for this date');
