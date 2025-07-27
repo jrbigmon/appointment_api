@@ -19,7 +19,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/appointment_api/test/jest-e2e.json",
     "typeorm": "typeorm-ts-node-commonjs",
-    "migration:appointment:generate": "yarn typeorm migration:generate apps/appointment/src/database/migrations/EqualizeDatabase -d apps/appointment/src/database/datasource.ts"
+    "migration:appointment:generate": "yarn typeorm migration:generate apps/appointment/src/database/migrations/EqualizeDatabase -d apps/appointment/src/database/datasource.ts",
+    "migration:appointment:run": "yarn typeorm migration:run -d apps/appointment/src/database/datasource.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.16",
