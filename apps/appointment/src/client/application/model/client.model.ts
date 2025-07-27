@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { ScheduleModel } from 'apps/appointment/src/schedule/application/model/schedule.model';
+import { ScheduleModel } from '../../../schedule/application/model/schedule.model';
 
 @Entity({ name: 'clients' })
 export class ClientModel {

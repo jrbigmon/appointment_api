@@ -3,13 +3,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 import { BillingTypeEnum } from '../../domain/enums/billing-type.enum';
-import { ClientModel } from 'apps/appointment/src/client/application/model/client.model';
+import { ClientModel } from '../../../client/application/model/client.model';
 import { ScheduleStatusEnum } from '../../domain/enums/schedule-status.enum';
 
 @Entity({ name: 'schedules' })
@@ -27,6 +28,7 @@ export class ScheduleModel {
   clientId: string;
 
   @ManyToOne(() => ClientModel, (client) => client.schedules)
+  @JoinColumn({ name: 'client_id' })
   client: ClientModel;
 
   @Column({ type: 'decimal' })
